@@ -21,7 +21,7 @@ model Restaurant {
   avatarImageUrl String
   coverImageUrl  String
   menuCategories MenuCategory[]
-  products       Products[]
+  products       Product[]
   order          Order[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
@@ -32,22 +32,22 @@ model MenuCategory {
   name         String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String
-  products     Products[]
+  products     Product[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 }
 
-model Products {
+model Product {
   id             String          @id @default(uuid())
   name           String
   description    String
   price          Float
   imageUrl       String
   ingredients    String[]
-  menuCategory   MenuCategory    @relation(fields: [menuCategoryid], references: [id], onDelete: Cascade)
+  menuCategory   MenuCategory    @relation(fields: [menuCategoryId], references: [id], onDelete: Cascade)
   restaurantId   String
   restaurant     Restaurant      @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  menuCategoryid String
+  menuCategoryId String
   orderProducts  OrderProducts[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -68,7 +68,7 @@ model Order {
 model OrderProducts {
   id        String   @id @default(uuid())
   price     Float
-  product   Products @relation(fields: [ProductId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [ProductId], references: [id], onDelete: Cascade)
   ProductId String
   order     Order    @relation(fields: [OrderId], references: [id], onDelete: Cascade)
   OrderId   Int
