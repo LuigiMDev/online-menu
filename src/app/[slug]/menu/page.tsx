@@ -2,6 +2,7 @@ import React from "react";
 import { getRestaurantBySlug } from "@/app/data/getRestaurantBySlug";
 import { notFound } from "next/navigation";
 import Header from "./components/Header";
+import Categories from "./components/Categories";
 
 type props = {
   params: { slug: string };
@@ -29,6 +30,7 @@ const page = async ({ params, searchParams }: props) => {
   return (
     <div>
       <Header restaurant={restaurant} />
+      <Categories restaurant={restaurant}/>
     </div>
   );
 };

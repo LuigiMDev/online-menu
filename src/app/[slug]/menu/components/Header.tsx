@@ -10,7 +10,7 @@ type props = {
   restaurant: Pick<Restaurant, "coverImageUrl" | "name">;
 };
 
-export const Header = ({ restaurant }: props) => {
+const Header = ({ restaurant }: props) => {
   const router = useRouter();
 
   const handleClick = () => {
