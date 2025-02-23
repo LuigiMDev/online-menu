@@ -17,7 +17,7 @@ const CartSheet = () => {
             <SheetTitle>Are you absolutely sure?</SheetTitle>
             <SheetDescription>
               {products.map((product) => (
-                <p>{product.name}</p>
+                <p>{product.name} - {product.quantity}</p>
               ))}
             </SheetDescription>
           </SheetHeader>
