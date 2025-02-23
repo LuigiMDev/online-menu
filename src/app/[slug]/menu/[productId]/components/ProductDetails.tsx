@@ -6,6 +6,8 @@ import { formatCurrency } from "@/helpers/format-currency";
 import { Button } from "@/components/ui/button";
 import { ChefHatIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { HookCart } from "../../context/HookCart";
+import CartSheet from "./CartSheet";
 
 type props = {
   product: Product;
@@ -27,74 +29,82 @@ const ProductDetails = ({ product, restaurant }: props) => {
     }
   };
 
+  const { toggleCart } = HookCart();
+
   return (
-    <div className="relative z-50 -mt-[1.5rem] flex flex-auto flex-col overflow-hidden rounded-3xl p-5">
-      <div className="flex-auto flex flex-col overflow-hidden">
-        <div className="flex items-center gap-1.5">
-          <Image
-            src={restaurant.avatarImageUrl}
-            alt={restaurant.name}
-            width={16}
-            height={16}
-            className="rounded-full"
-          />{" "}
-          <p className="text-xs text-muted-foreground">{restaurant.name}</p>
-        </div>
-        <h1 className="mt-1 text-xl font-semibold">{product.name}</h1>
-
-        <div className="flex justify-between mt-3">
-          <h2 className="text-xl font-semibold">
-            {formatCurrency(product.price)}
-          </h2>
-          <div className="flex items-center gap-3 text-center">
-            <Button
-              variant="outline"
-              className="h-8 w-8 rounded-xl"
-              onClick={handleDecreaseQuantity}
-            >
-              <ChevronLeft />
-            </Button>
-            <p className="w-4">{quantity}</p>
-            <Button
-              variant="destructive"
-              className="h-8 w-8 rounded-xl"
-              onClick={handleIncreaseQuantity}
-            >
-              <ChevronRight />
-            </Button>
+    <>
+      <div className="relative z-50 -mt-[1.5rem] flex flex-auto flex-col overflow-hidden rounded-3xl p-5">
+        <div className="flex flex-auto flex-col overflow-hidden">
+          <div className="flex items-center gap-1.5">
+            <Image
+              src={restaurant.avatarImageUrl}
+              alt={restaurant.name}
+              width={16}
+              height={16}
+              className="rounded-full"
+            />{" "}
+            <p className="text-xs text-muted-foreground">{restaurant.name}</p>
           </div>
-        </div>
+          <h1 className="mt-1 text-xl font-semibold">{product.name}</h1>
 
-        <ScrollArea>
-          <div className="mt-6 space-y-3">
-            <h3 className="font-semibold">Sobre</h3>
-            <p className="text-sm text-muted-foreground">
-              {product.description}
-            </p>
+          <div className="mt-3 flex justify-between">
+            <h2 className="text-xl font-semibold">
+              {formatCurrency(product.price)}
+            </h2>
+            <div className="flex items-center gap-3 text-center">
+              <Button
+                variant="outline"
+                className="h-8 w-8 rounded-xl"
+                onClick={handleDecreaseQuantity}
+              >
+                <ChevronLeft />
+              </Button>
+              <p className="w-4">{quantity}</p>
+              <Button
+                variant="destructive"
+                className="h-8 w-8 rounded-xl"
+                onClick={handleIncreaseQuantity}
+              >
+                <ChevronRight />
+              </Button>
+            </div>
           </div>
-          <div className="mt-6 space-y-3">
-            <div className="flex items-center gap-1.5">
-              <ChefHatIcon size={18} />
+
+          <ScrollArea>
+            <div className="mt-6 space-y-3">
               <h3 className="font-semibold">Sobre</h3>
+              <p className="text-sm text-muted-foreground">
+                {product.description}
+              </p>
             </div>
-            <div>
-              <ol className="list-disc pl-5">
-                {product.ingredients.map((ingredient) => (
-                  <li
-                    key={ingredient}
-                    className="text-sm text-muted-foreground"
-                  >
-                    {ingredient}
-                  </li>
-                ))}
-              </ol>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-1.5">
+                <ChefHatIcon size={18} />
+                <h3 className="font-semibold">Sobre</h3>
+              </div>
+              <div>
+                <ol className="list-disc pl-5">
+                  {product.ingredients.map((ingredient) => (
+                    <li
+                      key={ingredient}
+                      className="text-sm text-muted-foreground"
+                    >
+                      {ingredient}
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
-          </div>
-        </ScrollArea>
+          </ScrollArea>
+        </div>
+
+        <Button className="mt-6 w-full rounded-full" onClick={toggleCart}>
+          Adicionar à sacola
+        </Button>
       </div>
 
-      <Button className="mt-6 w-full rounded-full">Adicionar à sacola</Button>
-    </div>
+      <CartSheet />
+    </>
   );
 };
 
