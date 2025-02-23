@@ -9,7 +9,7 @@ type props = {
 
 const ProductHeader = ({product}: props) => {
   return (
-    <div className='relative h-[300px] w-full'>
+    <div className='relative min-h-[300px] w-full'>
             <Image src={product.imageUrl} fill className='object-contain' alt={product.name} />
             <HeaderButtons />
         </div>
