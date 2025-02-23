@@ -6,6 +6,7 @@ import Image from "next/image";
 import takeway from "@/assets/welcome/takeway.svg";
 import dineIn from "@/assets/welcome/dineIn.svg";
 import OptionConsumptionMethod from "./components/OptionConsumptionMethod";
+import { Metadata } from "next";
 
 type props = {
   params: Promise<{ slug: string }>;

@@ -1,22 +1,16 @@
 import { getProductById } from '@/app/data/getProductById';
-import { getRestaurantBySlug } from '@/app/data/getRestaurantBySlug';
 import { notFound } from 'next/navigation';
 import React from 'react'
 import ProductHeader from './components/ProductHeader';
+import ProductDetails from './components/ProductDetails';
 
 type props = {
-    params: Promise<{slug:string, productId: string}>
+    params: Promise<{productId: string, slug: string}>
 }
 
 const page = async ({params}: props) => {
 
-    const {slug, productId} = await params;
-
-    const restaurant = await getRestaurantBySlug(slug);
-
-    if(!restaurant) {
-        return notFound()
-    }
+    const {productId, slug} = await params
 
     const product = await getProductById(productId)
 
@@ -24,10 +18,16 @@ const page = async ({params}: props) => {
         return notFound()
     }
 
+    if(slug.toUpperCase() !== product.restaurant.slug.toUpperCase()) {
+        return notFound()
+    }
+
+
   return (
-    <>
+    <div className='flex h-full flex-col'>
         <ProductHeader product={product} />
-    </>
+        <ProductDetails product={product} restaurant={product.restaurant} />
+    </div>
   )
 }
 
