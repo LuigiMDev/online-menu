@@ -5,16 +5,16 @@ import Header from "./components/Header";
 import Categories from "./components/Categories";
 
 type props = {
-  params: { slug: string };
-  searchParams: { consumptionMethod: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{consumptionMethod: string}>;
 };
 
 const page = async ({ params, searchParams }: props) => {
-  const { slug } = params;
-  const { consumptionMethod } = searchParams;
+  const { slug } = await params;
+  const { consumptionMethod } = await searchParams;
 
   const isConsumptionMethodValid = (consumptionMethod: string) => {
-    return ["TAKEAWAY", "DINE_IN"].includes(consumptionMethod.toUpperCase());
+    return ["TAKEAWAY", "DINE_IN"].includes(consumptionMethod?.toUpperCase());
   };
 
   if (!isConsumptionMethodValid(consumptionMethod)) {

@@ -8,11 +8,11 @@ import dineIn from "@/assets/welcome/dineIn.svg";
 import OptionConsumptionMethod from "./components/OptionConsumptionMethod";
 
 type props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 const page = async ({ params }: props) => {
-  const { slug } = params;
+  const { slug } = await params;
 
   const restaurant = await getRestaurantBySlug(slug);
 

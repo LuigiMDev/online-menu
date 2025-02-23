@@ -5,13 +5,14 @@ import React from 'react'
 
 type props = {
     products: Product[]
+    slug: string
 }
 
-const Products = ({products}: props) => {
+const Products = ({products, slug}: props) => {
   return (
     <div className='space-y-3 px-5'>
         {products.map((product) => (
-            <Link href="" className='flex items-center justify-between gap-10 py-3 border-b'>
+            <Link key={product.id} href={`/${slug}/menu/${product.id}`} className='flex items-center justify-between gap-10 py-3 border-b'>
                 <div>
                  <h3 className="text-sm font-medium">{product.name}</h3>
                  <p className="line-clamp-2 text-sm text-muted-foreground">{product.description}</p>

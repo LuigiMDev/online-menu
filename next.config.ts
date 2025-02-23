@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
+import { hostname } from "os";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["u9a6wmr3as.ufs.sh"]
+    remotePatterns: [
+      {
+        hostname: "u9a6wmr3as.ufs.sh"
+      }
+    ]
   }
 };
 
