@@ -29,7 +29,12 @@ const ProductDetails = ({ product, restaurant }: props) => {
     }
   };
 
-  const { toggleCart } = HookCart();
+  const { toggleCart, addProductToCart } = HookCart();
+
+  const handleAddToCart = () => {
+    addProductToCart({...product, quantity});
+    toggleCart();
+  }
 
   return (
     <>
@@ -98,7 +103,7 @@ const ProductDetails = ({ product, restaurant }: props) => {
           </ScrollArea>
         </div>
 
-        <Button className="mt-6 w-full rounded-full" onClick={toggleCart}>
+        <Button className="mt-6 w-full rounded-full" onClick={handleAddToCart}>
           Adicionar à sacola
         </Button>
       </div>
