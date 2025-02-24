@@ -95,7 +95,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const excludeProduct = (productId: string) => {
     setProducts((prevProducts) => {
       return prevProducts.filter((product) => {
-        product.id !== productId;
+        return product.id !== productId;
       });
     });
   };
