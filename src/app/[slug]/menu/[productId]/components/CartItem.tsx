@@ -5,24 +5,26 @@ import Image from "next/image";
 import { formatCurrency } from "@/helpers/format-currency";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, TrashIcon } from "lucide-react";
+import { HookCart } from "../../context/HookCart";
 
 type prop = {
   product: CartProduct;
 };
 
 const CartItem = ({ product }: prop) => {
-  const [quantity, setQuantity] = useState(1);
+  const { decreaseProductQuantity, increaseProductQuantity, excludeProduct } =
+    HookCart();
 
   const handleIncreaseQuantity = () => {
-    if (quantity < 30) {
-      setQuantity(quantity + 1);
-    }
+    increaseProductQuantity(product.id);
   };
 
   const handleDecreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+    decreaseProductQuantity(product.id);
+  };
+
+  const handleExcludeProduct = () => {
+    excludeProduct(product.id);
   };
 
   return (
@@ -38,7 +40,9 @@ const CartItem = ({ product }: prop) => {
         </div>
 
         <div className="space-y-1">
-          <p className="text-xs w-[90%] truncate text-ellipsis">{product.name}</p>
+          <p className="w-[90%] truncate text-ellipsis text-xs">
+            {product.name}
+          </p>
           <p className="text-sm font-semibold">
             {formatCurrency(product.price)}
           </p>
@@ -50,7 +54,7 @@ const CartItem = ({ product }: prop) => {
             >
               <ChevronLeft size={14} />
             </Button>
-            <p className="w-4 text-xs">{quantity}</p>
+            <p className="w-4 text-xs">{product.quantity}</p>
             <Button
               variant="destructive"
               className="h-7 w-7 rounded-lg"
@@ -61,7 +65,11 @@ const CartItem = ({ product }: prop) => {
           </div>
         </div>
       </div>
-      <Button className="h-7 w-7 rounded-lg" variant="outline">
+      <Button
+        className="h-7 w-7 rounded-lg"
+        variant="outline"
+        onClick={handleExcludeProduct}
+      >
         <TrashIcon />
       </Button>
     </div>
