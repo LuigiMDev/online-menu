@@ -17,7 +17,11 @@ const Products = ({products, slug}: props) => {
                 <div>
                  <h3 className="text-sm font-medium">{product.name}</h3>
                  <p className="line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
-                 <p className='pt-3 text-sm font-semibold'>{formatCurrency(product.price)}</p>
+                 {product.discount > 0 ? <div className='flex space-x-2 items-center'>
+                  <p className='pt-3 text-sm font-semibold line-through italic text-red-500'>{formatCurrency(product.price)}</p>
+                  <p className='pt-3 text-sm font-semibold'>{formatCurrency(product.price - product.discount)}</p>
+                 </div> : <p className='pt-3 text-sm font-semibold'>{formatCurrency(product.price)}</p>}
+                 
                 </div>
 
                 <div className='relative min-h-[82px] min-w-[120px]'>

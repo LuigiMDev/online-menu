@@ -42,6 +42,7 @@ model Product {
   name           String
   description    String
   price          Float
+  discount       Float           @default(0)
   imageUrl       String
   ingredients    String[]
   menuCategory   MenuCategory    @relation(fields: [menuCategoryId], references: [id], onDelete: Cascade)

@@ -43,9 +43,20 @@ const CartItem = ({ product }: prop) => {
           <p className="w-[90%] truncate text-ellipsis text-xs">
             {product.name}
           </p>
-          <p className="text-sm font-semibold">
-            {formatCurrency(product.price)}
-          </p>
+          {product.discount > 0 ? (
+            <div className="flex items-center space-x-2">
+              <p className="text-sm font-semibold italic text-red-500 line-through">
+                {formatCurrency(product.price)}
+              </p>
+              <p className="text-sm font-semibold">
+                {formatCurrency(product.price - product.discount)}
+              </p>
+            </div>
+          ) : (
+            <p className="text-sm font-semibold">
+              {formatCurrency(product.price)}
+            </p>
+          )}
           <div className="flex items-center gap-1 text-center">
             <Button
               variant="outline"

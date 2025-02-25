@@ -3,7 +3,7 @@ import { Product } from "@prisma/client";
 import { createContext, ReactNode, useState } from "react";
 
 export interface CartProduct
-  extends Pick<Product, "id" | "name" | "price" | "imageUrl"> {
+  extends Pick<Product, "id" | "name" | "price" | "imageUrl" | "discount"> {
   quantity: number;
 }
 
@@ -15,6 +15,9 @@ type CartContext = {
   decreaseProductQuantity: (productId: string) => void;
   increaseProductQuantity: (productId: string) => void;
   excludeProduct: (productId: string) => void;
+  subtotal: number;
+  discounts: number;
+  total: number;
 };
 
 export const CartContext = createContext<CartContext>({
@@ -25,6 +28,9 @@ export const CartContext = createContext<CartContext>({
   decreaseProductQuantity: (productId: string) => {},
   increaseProductQuantity: (productId: string) => {},
   excludeProduct: (productId: string) => {},
+  subtotal: 0,
+  discounts: 0,
+  total: 0,
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -100,6 +106,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const subtotal = products.reduce((acc, product) => {
+    return (acc += product.price * product.quantity);
+  }, 0);
+
+  const discounts = products.reduce((acc, product) => {
+    return (acc += product.discount * product.quantity);
+  }, 0);
+
+  const total = subtotal - discounts;
+
   return (
     <CartContext.Provider
       value={{
@@ -110,6 +126,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         decreaseProductQuantity,
         increaseProductQuantity,
         excludeProduct,
+        subtotal,
+        discounts,
+        total
       }}
     >
       {children}

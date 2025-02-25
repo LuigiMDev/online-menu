@@ -32,9 +32,9 @@ const ProductDetails = ({ product, restaurant }: props) => {
   const { toggleCart, addProductToCart } = HookCart();
 
   const handleAddToCart = () => {
-    addProductToCart({...product, quantity});
+    addProductToCart({ ...product, quantity });
     toggleCart();
-  }
+  };
 
   return (
     <>
@@ -53,9 +53,21 @@ const ProductDetails = ({ product, restaurant }: props) => {
           <h1 className="mt-1 text-xl font-semibold">{product.name}</h1>
 
           <div className="mt-3 flex justify-between">
-            <h2 className="text-xl font-semibold">
-              {formatCurrency(product.price)}
-            </h2>
+            {product.discount > 0 ? (
+              <div className="flex items-center space-x-2">
+                <h2 className="text-xl font-semibold italic text-red-500 line-through">
+                  {formatCurrency(product.price)}
+                </h2>
+                <h2 className="text-xl font-semibold">
+                  {formatCurrency(product.price - product.discount)}
+                </h2>
+              </div>
+            ) : (
+              <h2 className="text-xl font-semibold">
+                {formatCurrency(product.price)}
+              </h2>
+            )}
+
             <div className="flex items-center gap-3 text-center">
               <Button
                 variant="outline"
