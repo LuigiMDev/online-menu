@@ -10,6 +10,7 @@ import CartItem from "./CartItem";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/helpers/format-currency";
+import FinishedOrderButton from "./FinishedOrderButton";
 
 const CartSheet = () => {
   const { toggleCart, isOpen, products, subtotal, discounts, total } = HookCart();
@@ -43,7 +44,7 @@ const CartSheet = () => {
                 </div>
               </CardContent>
             </Card>
-            <Button className="w-full rounded-full">Finalizar pedido</Button>
+            <FinishedOrderButton />
           </div>
         </div>
       </SheetContent>
