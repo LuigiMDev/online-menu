@@ -3,6 +3,7 @@
 import { db } from "@/lib/prisma";
 import { ConsumptionMethod } from "@prisma/client";
 import { removeCpfPunctuation } from "../helpers/cpf";
+import { redirect } from "next/navigation";
 
 type prop = {
   customerName: string;
@@ -56,4 +57,5 @@ export const CreateOrder = async (input: prop) => {
       restaurantId: restaurant.id
     },
   });
+  redirect(`/${input.slug}/orders?cpf=${removeCpfPunctuation(input.customerCPF)}`)
 };
