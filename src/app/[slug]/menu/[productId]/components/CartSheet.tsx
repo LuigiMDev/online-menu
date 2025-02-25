@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -7,13 +8,17 @@ import {
 } from "@/components/ui/sheet";
 import { HookCart } from "../../context/HookCart";
 import CartItem from "./CartItem";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/helpers/format-currency";
 import FinishedOrderButton from "./FinishedOrderButton";
+import { Button } from "@/components/ui/button";
 
 const CartSheet = () => {
-  const { toggleCart, isOpen, products, subtotal, discounts, total } = HookCart();
+  const { toggleCart, isOpen, products, subtotal, discounts, total } =
+    HookCart();
+
+  const [open, onOpenChange] = useState(false);
+
   return (
     <Sheet open={isOpen} onOpenChange={toggleCart}>
       <SheetContent className="">
@@ -30,11 +35,11 @@ const CartSheet = () => {
           <div>
             <Card className="mb-6">
               <CardContent className="p-5">
-                <div className="flex justify-between border-b p-2  text-sm">
+                <div className="flex justify-between border-b p-2 text-sm">
                   <p className="text-muted-foreground">Subtotal</p>
                   <p>{formatCurrency(subtotal)}</p>
                 </div>
-                <div className="flex justify-between border-b p-2  text-sm">
+                <div className="flex justify-between border-b p-2 text-sm">
                   <p className="text-muted-foreground">Descontos</p>
                   <p>{formatCurrency(discounts)}</p>
                 </div>
@@ -42,9 +47,10 @@ const CartSheet = () => {
                   <p>Total</p>
                   <p>{formatCurrency(total)}</p>
                 </div>
+                <Button className="w-full rounded-full" onClick={() => onOpenChange(true)}>Finalizar pedido</Button>
               </CardContent>
             </Card>
-            <FinishedOrderButton />
+            <FinishedOrderButton open={open} onOpenChange={onOpenChange} />
           </div>
         </div>
       </SheetContent>

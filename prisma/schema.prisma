@@ -62,6 +62,8 @@ model Order {
   restaurantId      String
   consumptionMethod ConsumptionMethod
   orderProducts     OrderProducts[]
+  customerName      String
+  customerCPF       String
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 }
@@ -73,6 +75,7 @@ model OrderProducts {
   ProductId String
   order     Order    @relation(fields: [OrderId], references: [id], onDelete: Cascade)
   OrderId   Int
+  quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

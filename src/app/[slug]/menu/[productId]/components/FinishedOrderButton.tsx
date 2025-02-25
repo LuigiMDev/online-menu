@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useTransition } from "react";
 import {
   Drawer,
   DrawerClose,
@@ -27,6 +27,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { CreateOrder } from "../../actions/CreateOrder";
+import { useParams, useSearchParams } from "next/navigation";
+import { ConsumptionMethod } from "@prisma/client";
+import { HookCart } from "../../context/HookCart";
+import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {
@@ -45,7 +51,14 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const FinishedOrderButton = () => {
+type props = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
+
+const FinishedOrderButton = ({ open, onOpenChange }: props) => {
+  const { products } = HookCart();
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,15 +67,44 @@ const FinishedOrderButton = () => {
     },
   });
 
-  const onSubmit = (data: FormSchema) => {
-    console.log(data);
+  const searchParams = useSearchParams();
+  const { slug } = useParams<{ slug: string }>();
+  const [isPending, startTransition] = useTransition();
+  const consumptionMethod = searchParams.get(
+    "consumptionMethod",
+  ) as ConsumptionMethod;
+
+  const onSubmit = async (data: FormSchema) => {
+    console.log({
+      consumptionMethod,
+      customerCPF: data.cpf,
+      customerName: data.name,
+      products,
+      slug,
+    });
+    try {
+      const consumptionMethod = searchParams.get(
+        "consumptionMethod",
+      ) as ConsumptionMethod;
+      startTransition(async () => {
+        await CreateOrder({
+          consumptionMethod,
+          customerCPF: data.cpf,
+          customerName: data.name,
+          products,
+          slug,
+        });
+        onOpenChange(false);
+        toast.success("Pedido finalizado com sucesso!");
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <Drawer>
-      <DrawerTrigger className="w-full" asChild>
-        <Button className="w-full rounded-full">Finalizar pedido</Button>
-      </DrawerTrigger>
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerTrigger className="w-full" asChild></DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Finalizar pedido</DrawerTitle>
@@ -105,9 +147,19 @@ const FinishedOrderButton = () => {
                 )}
               />
               <DrawerFooter>
-                <Button type="submit">Submit</Button>
-                <DrawerClose>
-                  <Button variant="outline">Cancel</Button>
+                <Button
+                  type="submit"
+                  variant="destructive"
+                  className="rounded-full"
+                  disabled={isPending}
+                >
+                  {isPending && <Loader2Icon className="animate-spin" />}
+                  Finalizar
+                </Button>
+                <DrawerClose asChild>
+                  <Button variant="outline" className="w-full rounded-full">
+                    Cancelar
+                  </Button>
                 </DrawerClose>
               </DrawerFooter>
             </form>
