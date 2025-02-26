@@ -11,6 +11,7 @@ import { formatCurrency } from "@/helpers/format-currency";
 
 import CartSheet from "../../menu/[productId]/components/CartSheet";
 import { HookCart } from "../../menu/context/HookCart";
+import { useRouter } from "next/navigation";
 
 type props = {
   orders: Prisma.OrderGetPayload<{
@@ -56,10 +57,16 @@ const Orders = ({ orders }: props) => {
     toggleCart();
   };
 
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back()
+  }
+
   return (
     <>
       <div className="space-y-6 p-6">
-        <Button variant="secondary" size="icon" className="rounded-full">
+        <Button variant="secondary" size="icon" className="rounded-full" onClick={handleBack}>
           <ChevronLeftIcon />
         </Button>
         <div className="flex items-center gap-3">
