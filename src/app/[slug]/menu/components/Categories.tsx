@@ -6,6 +6,9 @@ import { ClockIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import Products from "./Products";
+import { HookCart } from "../context/HookCart";
+import { formatCurrency } from "@/helpers/format-currency";
+import CartSheet from "../[productId]/components/CartSheet";
 
 type props = {
   restaurant: Prisma.RestaurantGetPayload<{
@@ -31,6 +34,8 @@ const Categories = ({ restaurant }: props) => {
     const handleCategoryClick = (menuCategory: MenuCategoriesWithProducts) => {
         setSelectedCategory(menuCategory)
     }
+
+    const {products, total, toggleCart, totalQuantities} = HookCart()
 
     const getSelectedCategorieVariant = (category: MenuCategory) => {
         return selectedCategory === category ? "default" : "secondary"
@@ -69,6 +74,18 @@ const Categories = ({ restaurant }: props) => {
       </ScrollArea>
       <h2 className="px-5 font-semibold pt-2">{selectedCategory.name}</h2>
       <Products products={selectedCategory.products} slug={restaurant.slug} />
+      {products.length > 0 && (
+        <div className="flex w-full fixed bottom-0 left-0 right-0 items-center justify-between border-t bg-white px-5 py-3">
+          <div className="">
+            <p className="text-xs text-muted-foreground">
+              Total dos pedidos
+            </p>
+            <p className="text-sm font-semibold">{formatCurrency(total)}<span className="text-xs font-normal text-muted-foreground">/{totalQuantities} {totalQuantities > 1 ? "itens" : "item"}</span></p>
+          </div>
+          <Button onClick={toggleCart}>Ver sacola</Button>
+          <CartSheet />
+        </div>
+      )}
     </div>
   );
 };
