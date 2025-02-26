@@ -1,12 +1,12 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
 
-import { getRestaurantBySlug } from "../data/getRestaurantBySlug";
-import Image from "next/image";
-import takeway from "@/assets/welcome/takeway.svg";
 import dineIn from "@/assets/welcome/dineIn.svg";
+import takeway from "@/assets/welcome/takeway.svg";
+
+import { getRestaurantBySlug } from "../data/getRestaurantBySlug";
 import OptionConsumptionMethod from "./components/OptionConsumptionMethod";
-import { Metadata } from "next";
 
 type props = {
   params: Promise<{ slug: string }>;

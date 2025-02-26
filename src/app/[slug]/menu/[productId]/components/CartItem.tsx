@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import { CartProduct } from "../../context/Cart";
-import Image from "next/image";
-import { formatCurrency } from "@/helpers/format-currency";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, TrashIcon } from "lucide-react";
+import Image from "next/image";
+import React from "react";
+
+import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/helpers/format-currency";
+
+import { CartProduct } from "../../context/Cart";
 import { HookCart } from "../../context/HookCart";
 
 type prop = {

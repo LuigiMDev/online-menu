@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
-import { z } from "zod";
-import { isValidCpf, removeCpfPunctuation } from "../../menu/helpers/cpf";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname, useRouter } from "next/navigation";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { PatternFormat } from "react-number-format";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -21,10 +24,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PatternFormat } from "react-number-format";
-import { usePathname, useRouter } from "next/navigation";
+
+import { isValidCpf, removeCpfPunctuation } from "../../menu/helpers/cpf";
 
 const formSchema = z.object({
   cpf: z
@@ -45,16 +47,16 @@ const CpfForm = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
 
   const onSubmit = (data: FormSchema) => {
-    router.push(`${pathname}?cpf=${removeCpfPunctuation(data.cpf)}`)
-  }
+    router.push(`${pathname}?cpf=${removeCpfPunctuation(data.cpf)}`);
+  };
 
   const handleCancel = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   return (
     <Drawer open>
@@ -65,42 +67,46 @@ const CpfForm = () => {
             Insira suas informações abaixo para ver seus pedidos
           </DrawerDescription>
         </DrawerHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="cpf"
-                render={({ field }) => (
-                  <FormItem className="px-5">
-                    <FormLabel>Seu CPF</FormLabel>
-                    <FormControl>
-                      <PatternFormat
-                        placeholder="Digite o seu CPF..."
-                        format="###.###.###-##"
-                        customInput={Input}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DrawerFooter>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="cpf"
+              render={({ field }) => (
+                <FormItem className="px-5">
+                  <FormLabel>Seu CPF</FormLabel>
+                  <FormControl>
+                    <PatternFormat
+                      placeholder="Digite o seu CPF..."
+                      format="###.###.###-##"
+                      customInput={Input}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DrawerFooter>
+              <Button
+                type="submit"
+                variant="destructive"
+                className="rounded-full"
+              >
+                Confirmar
+              </Button>
+              <DrawerClose asChild>
                 <Button
-                  type="submit"
-                  variant="destructive"
-                  className="rounded-full"
+                  variant="outline"
+                  className="w-full rounded-full"
+                  onClick={handleCancel}
                 >
-                  Confirmar
+                  Cancelar
                 </Button>
-                <DrawerClose asChild>
-                  <Button variant="outline" className="w-full rounded-full" onClick={handleCancel}>
-                    Cancelar
-                  </Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </form>
-          </Form>
+              </DrawerClose>
+            </DrawerFooter>
+          </form>
+        </Form>
       </DrawerContent>
     </Drawer>
   );

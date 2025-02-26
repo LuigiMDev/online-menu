@@ -1,12 +1,14 @@
-import React from "react";
-import { getRestaurantBySlug } from "@/app/data/getRestaurantBySlug";
 import { notFound } from "next/navigation";
-import Header from "./components/Header";
+import React from "react";
+
+import { getRestaurantBySlug } from "@/app/data/getRestaurantBySlug";
+
 import Categories from "./components/Categories";
+import Header from "./components/Header";
 
 type props = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{consumptionMethod: string}>;
+  searchParams: Promise<{ consumptionMethod: string }>;
 };
 
 const page = async ({ params, searchParams }: props) => {
@@ -23,14 +25,14 @@ const page = async ({ params, searchParams }: props) => {
 
   const restaurant = await getRestaurantBySlug(slug);
 
-  if(!restaurant) {
-    return notFound()
+  if (!restaurant) {
+    return notFound();
   }
 
   return (
     <div>
       <Header restaurant={restaurant} />
-      <Categories restaurant={restaurant}/>
+      <Categories restaurant={restaurant} />
     </div>
   );
 };

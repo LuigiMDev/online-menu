@@ -2,13 +2,14 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { CartProvider } from "./[slug]/menu/context/Cart";
 import { Toaster } from "sonner";
+
+import { CartProvider } from "./[slug]/menu/context/Cart";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"]
-})
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Menu Digital - FSW Donalds",
@@ -22,12 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} antialiased`}
-      >
-        <CartProvider>
-        {children}
-        </CartProvider>
+      <body className={`${poppins.className} antialiased`}>
+        <CartProvider>{children}</CartProvider>
 
         <Toaster />
       </body>

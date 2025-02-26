@@ -1,17 +1,19 @@
 "use client";
 import React, { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { formatCurrency } from "@/helpers/format-currency";
+
 import { HookCart } from "../../context/HookCart";
 import CartItem from "./CartItem";
-import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency } from "@/helpers/format-currency";
 import FinishedOrderButton from "./FinishedOrderButton";
-import { Button } from "@/components/ui/button";
 
 const CartSheet = () => {
   const { toggleCart, isOpen, products, subtotal, discounts, total } =
@@ -47,7 +49,12 @@ const CartSheet = () => {
                   <p>Total</p>
                   <p>{formatCurrency(total)}</p>
                 </div>
-                <Button className="w-full rounded-full" onClick={() => onOpenChange(true)}>Finalizar pedido</Button>
+                <Button
+                  className="w-full rounded-full"
+                  onClick={() => onOpenChange(true)}
+                >
+                  Finalizar pedido
+                </Button>
               </CardContent>
             </Card>
             <FinishedOrderButton open={open} onOpenChange={onOpenChange} />

@@ -18,17 +18,17 @@ type CartContext = {
   subtotal: number;
   discounts: number;
   total: number;
-  totalQuantities: number
+  totalQuantities: number;
 };
 
 export const CartContext = createContext<CartContext>({
   isOpen: false,
   products: [],
   toggleCart: () => {},
-  addProductToCart: (product: CartProduct) => {},
-  decreaseProductQuantity: (productId: string) => {},
-  increaseProductQuantity: (productId: string) => {},
-  excludeProduct: (productId: string) => {},
+  addProductToCart: (_product: CartProduct) => {},
+  decreaseProductQuantity: (_productId: string) => {},
+  increaseProductQuantity: (_productId: string) => {},
+  excludeProduct: (_productId: string) => {},
   subtotal: 0,
   discounts: 0,
   total: 0,
@@ -118,7 +118,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const total = subtotal - discounts;
 
-  const totalQuantities = products.reduce((acc, product) => acc + product.quantity, 0)
+  const totalQuantities = products.reduce(
+    (acc, product) => acc + product.quantity,
+    0,
+  );
 
   return (
     <CartContext.Provider
@@ -133,7 +136,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         subtotal,
         discounts,
         total,
-        totalQuantities
+        totalQuantities,
       }}
     >
       {children}

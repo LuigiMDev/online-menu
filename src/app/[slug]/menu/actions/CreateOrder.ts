@@ -1,9 +1,11 @@
 "use server";
 
-import { db } from "@/lib/prisma";
 import { ConsumptionMethod } from "@prisma/client";
-import { removeCpfPunctuation } from "../helpers/cpf";
 import { redirect } from "next/navigation";
+
+import { db } from "@/lib/prisma";
+
+import { removeCpfPunctuation } from "../helpers/cpf";
 
 type prop = {
   customerName: string;
@@ -12,19 +14,20 @@ type prop = {
     id: string;
     price: number;
     quantity: number;
-    discount: number
+    discount: number;
   }[];
   consumptionMethod: ConsumptionMethod;
-  slug: string
+  slug: string;
 };
 
 export const CreateOrder = async (input: prop) => {
+  const restaurant = await db.restaurant.findUnique({
+    where: { slug: input.slug },
+  });
 
-    const restaurant = await db.restaurant.findUnique({where: {slug: input.slug}})
-
-    if (!restaurant) {
-        throw new Error("Não foi possível achar o restaurante")
-    }
+  if (!restaurant) {
+    throw new Error("Não foi possível achar o restaurante");
+  }
 
   const productsWithPrices = await db.product.findMany({
     where: {
@@ -37,7 +40,9 @@ export const CreateOrder = async (input: prop) => {
   const productsWithPricesAndQuantities = input.products.map((product) => ({
     ProductId: product.id,
     quantity: product.quantity,
-    price: (productsWithPrices.find((p) => p.id === product.id)!.price) - product.discount,
+    price:
+      productsWithPrices.find((p) => p.id === product.id)!.price -
+      product.discount,
   }));
 
   await db.order.create({
@@ -47,15 +52,18 @@ export const CreateOrder = async (input: prop) => {
       customerCPF: removeCpfPunctuation(input.customerCPF),
       orderProducts: {
         createMany: {
-          data: productsWithPricesAndQuantities
+          data: productsWithPricesAndQuantities,
         },
       },
-      total: productsWithPricesAndQuantities.reduce((acc, product) => (
-        acc + (product.price * product.quantity)
-      ), 0),
+      total: productsWithPricesAndQuantities.reduce(
+        (acc, product) => acc + product.price * product.quantity,
+        0,
+      ),
       consumptionMethod: input.consumptionMethod,
-      restaurantId: restaurant.id
+      restaurantId: restaurant.id,
     },
   });
-  redirect(`/${input.slug}/orders?cpf=${removeCpfPunctuation(input.customerCPF)}`)
+  redirect(
+    `/${input.slug}/orders?cpf=${removeCpfPunctuation(input.customerCPF)}`,
+  );
 };

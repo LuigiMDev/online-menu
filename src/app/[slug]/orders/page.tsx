@@ -1,7 +1,9 @@
 import React from "react";
-import CpfForm from "./components/cpfForm";
-import { isValidCpf } from "../menu/helpers/cpf";
+
 import { db } from "@/lib/prisma";
+
+import { isValidCpf } from "../menu/helpers/cpf";
+import CpfForm from "./components/cpfForm";
 import Orders from "./components/orders";
 
 type props = {

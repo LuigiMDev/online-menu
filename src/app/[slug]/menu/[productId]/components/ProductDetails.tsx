@@ -1,11 +1,13 @@
 "use client";
-import Image from "next/image";
 import { Product, Restaurant } from "@prisma/client";
-import React, { useState } from "react";
-import { formatCurrency } from "@/helpers/format-currency";
-import { Button } from "@/components/ui/button";
 import { ChefHatIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import React, { useState } from "react";
+
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { formatCurrency } from "@/helpers/format-currency";
+
 import { HookCart } from "../../context/HookCart";
 import CartSheet from "./CartSheet";
 

@@ -1,9 +1,10 @@
-'use client'
-import React from "react";
+"use client";
 import { ChevronLeft, ScrollTextIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import React from "react";
+
+import { Button } from "@/components/ui/button";
 
 const HeaderButtons = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const HeaderButtons = () => {
     router.back();
   };
 
-  const {slug} = useParams<{slug: string}>()
+  const { slug } = useParams<{ slug: string }>();
 
   return (
     <>
@@ -29,7 +30,9 @@ const HeaderButtons = () => {
         size="icon"
         className="absolute right-4 top-4 z-30 rounded-full"
       >
-        <Link href={`/${slug}/orders`}><ScrollTextIcon /></Link>
+        <Link href={`/${slug}/orders`}>
+          <ScrollTextIcon />
+        </Link>
       </Button>
     </>
   );
